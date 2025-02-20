@@ -17,6 +17,11 @@ function NavBar() {
     setSearchKeyNavBar(event.target.value);
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+  }
+
+
   function showInfo() {
     dispatch(setIsShowInfo(true));
   }
@@ -71,7 +76,7 @@ function NavBar() {
             </li>
           </ul>
           { (path === "/favorites" || path === "/") && (
-            <form className="form-inline my-2 my-lg-0">
+            <form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
               <input className="form-control mr-sm-2" name="searchKey" value={searchKeyNavBar} onChange={handleInputChange} type="search" placeholder="Search by Title" />
             </form>
             )}
