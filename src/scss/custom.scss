@@ -298,6 +298,14 @@ input[type=text], input[type=email], input[type=password], input[type=date], inp
   margin-top: 7rem;
 }
 
+.spinner-container-infinite-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  height: 2rem;
+}
+
 .home-movie-title {
   text-decoration: none;
   color: black;

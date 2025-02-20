@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Spinner() {
+function Spinner({ className }) {
   return (
     <>
-      <div className="d-flex justify-content-center spinner">
+      <div className={`${className || "d-flex justify-content-center spinner"}`}>
         <div className="spinner-border text-primary" role="status">
           <span className="sr-only">Loading...</span>
         </div>
