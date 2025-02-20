@@ -77,7 +77,7 @@ function Info() {
                     Description
                   </h2>
                   <p>
-                    A web application for checking out your favorite movies using The Movie Database (TMDB) API.
+                    A web application for checking out trending movies using The Movie Database (TMDB) API.
                   </p>
                   <h2>Github</h2>
                   <ul>
@@ -86,6 +86,7 @@ function Info() {
                   <h2>Features</h2>
                     <ul>
                         <li>Filter movies by title</li>
+                        <li>Infinite scrolling</li>
                         <li>Click the images to show more details</li>
                         <li>Add movies to favorites by clicking the empty star icons</li>
                         <li>Remove movies from favorites by clicking the red star icons</li>
