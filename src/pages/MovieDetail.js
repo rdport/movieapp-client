@@ -12,7 +12,7 @@ function MovieDetail() {
   const movieDetail = useSelector(state => state.movieDetailReducer.movieDetail);
   const dispatch = useDispatch();
   const { MovieId } = useParams();
-  const url = `https://api.themoviedb.org/3/movie/${MovieId}?api_key=90d4a0880579cc5fa24ef5de07760fd3&language=en-US`;
+  const url = `https://api.themoviedb.org/3/movie/${MovieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
 
   useEffect(() => {
     dispatch(fetchMovieDetail(url));

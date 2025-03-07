@@ -24,7 +24,7 @@ function Info() {
                 <h1 className="text-center mb-3">Tech Stack</h1>
                 <div className="card-deck row" id="tech-stack-deck">
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/HTML5.svg" alt="HTML5"/>
                           <div className="info-card-body">
                             <h5 className="info-card-title card-title text-center">HTML5</h5>
@@ -32,7 +32,7 @@ function Info() {
                     </div>  
                   </div>
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/CSS3.svg" alt="CSS3"/>
                       <div className="info-card-body card-body">
                         <h5 className="info-card-title card-title text-center">CSS3</h5>
@@ -40,7 +40,7 @@ function Info() {
                     </div>
                   </div>
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/Bootstrap.svg" alt="Bootstrap"/>
                       <div className="info-card-body card-body">
                         <h5 className="info-card-title card-title text-center">Bootstrap</h5>
@@ -48,7 +48,7 @@ function Info() {
                     </div>
                   </div>
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/React.svg" alt="React"/>
                       <div className="info-card-body card-body">
                         <h5 className="info-card-title card-title text-center">React</h5>
@@ -56,7 +56,7 @@ function Info() {
                     </div>
                   </div>
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/Redux.svg" alt="Redux"/>
                       <div className="info-card-body card-body">
                         <h5 className="info-card-title card-title text-center">Redux</h5>
@@ -64,7 +64,7 @@ function Info() {
                     </div>
                   </div>
                   <div className="col-4">
-                    <div class="tech-icon-container">
+                    <div className="tech-icon-container">
                       <img className="info-card-img" src="/images/JavaScript.svg" alt="JavaScript"/>
                       <div className="info-card-body card-body">
                         <h5 className="info-card-title card-title text-center">JavaScript</h5>
