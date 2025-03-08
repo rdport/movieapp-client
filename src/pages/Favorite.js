@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFilteredFavorites } from '../store/actions/favoriteAction';
 import { useRouteMatch } from 'react-router-dom';
@@ -16,6 +16,8 @@ function Favorite() {
   const filteredFavoriteError = useSelector(state => state.favoriteReducer.filteredFavoriteError);
   const searchKey = useSelector(state => state.navbarReducer.searchKey);
   const favoriteIds = useSelector(state => state.favoriteReducer.favoriteIds);
+  const scrollContainerRef = useRef(null);
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,13 +28,29 @@ function Favorite() {
     dispatch(setPath(path));
   },[dispatch, path])
 
-  if (!filteredFavoriteIsLoaded) {
-    return <Spinner />
-  }
+  useEffect(() => {
+    // Step 1: Disable scrolling on the root (body or html) element
+    document.body.style.overflow = 'hidden';
+    // Step 2: Enable scrolling for the ref component
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.style.overflowY = 'auto';  // Enable vertical scrolling
+      container.style.height = '90vh';     // Set a height for the scrollable container
+    }
+    // Clean up the overflow style when the component is unmounted
+    return () => {
+      document.body.style.overflow = '';   // Restore body overflow
+    };
+  }, []);
+
+  // if (!filteredFavoriteIsLoaded) {
+  //   return <Spinner />
+  // }
   
   return (
     <>
       <h1 className="text-center mt-2">Favorite Page</h1>
+      {(!filteredFavoriteIsLoaded) && <Spinner />}
       {(filteredFavoriteError) && (<Error error={filteredFavoriteError} />)}
       {(!favoriteIds.length) && (<NoItem text={"No favorites"} />)}
       {(favoriteIds.length !== 0 && !filteredFavorites.length && !filteredFavoriteError) && <NoItem text={"No results"} />}

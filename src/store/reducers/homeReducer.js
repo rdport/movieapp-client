@@ -4,7 +4,9 @@ const initialState = {
   totalPages: null,
   isLoading: false,
   movieIsLoaded: false,
-  movieError: null
+  movieError: null,
+  movieIds: [],
+  scrollPosition: null
 }
 
 function homeReducer( state = initialState, action ) {
@@ -23,6 +25,12 @@ function homeReducer( state = initialState, action ) {
       return { ...state, movieError: action.movieError }
     case 'home/resetMovies':
       return { ...state, movies: action.movies }
+    case 'home/setMovieIds':
+      return { ...state, movieIds: [...state.movieIds, ...action.movieIds] }
+    case 'home/resetMovieIds':
+      return { ...state, moviesIds: action.movieIds }
+    case 'home/setScrollPosition':
+      return { ...state, scrollPosition: action.scrollPosition }
     default:
       return state
   }

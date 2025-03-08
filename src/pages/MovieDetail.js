@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useRouteMatch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMovieDetail } from '../store/actions/movieDetailAction';
@@ -12,7 +12,9 @@ function MovieDetail() {
   const movieDetail = useSelector(state => state.movieDetailReducer.movieDetail);
   const dispatch = useDispatch();
   const { MovieId } = useParams();
-  const url = `https://api.themoviedb.org/3/movie/${MovieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
+  const scrollContainerRef = useRef(null);
+  
+  const url = `https://api.themoviedb.org/3/movie/${MovieId}?api_key=90d4a0880579cc5fa24ef5de07760fd3&language=en-US`;
 
   useEffect(() => {
     dispatch(fetchMovieDetail(url));
@@ -22,9 +24,24 @@ function MovieDetail() {
     dispatch(setPath(path));
   },[dispatch, path])
 
+  useEffect(() => {
+    // Step 1: Disable scrolling on the root (body or html) element
+    document.body.style.overflow = 'hidden';
+    // Step 2: Enable scrolling for the ref component
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.style.overflowY = 'auto';  // Enable vertical scrolling
+      container.style.height = '90vh';     // Set a height for the scrollable container
+    }
+    // Clean up the overflow style when the component is unmounted
+    return () => {
+      document.body.style.overflow = '';   // Restore body overflow
+    };
+  }, []);
+
   return (
     <>
-      <div className="row justify-center d-flex align-items-center">
+      <div ref={scrollContainerRef} className="row justify-center d-flex align-items-center">
         <div className="col-sm col-md col-lg-4">
           <MovieImage movie={movieDetail} />
         </div>

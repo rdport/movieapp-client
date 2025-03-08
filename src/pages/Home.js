@@ -1,71 +1,90 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
-import { fetchMovies, setPage, resetMovies } from '../store/actions/homeAction';
+import { fetchMovies, setPage, setScrollPosition } from '../store/actions/homeAction';
 import { setPath } from '../store/actions/pathAction';
 import MovieCard from '../components/MovieCard';
 import Spinner from '../components/Spinner';
 import NoItem from '../components/NoItem';
 import Error from '../components/Error';
+import getURL from '../helpers/getUrl';
 
 function Home() {
   const { path } = useRouteMatch();
   const dispatch = useDispatch();
   const searchKey = useSelector(state => state.navbarReducer.searchKey);
-  const { movies, page, totalPages, isLoading } = useSelector(state => state.homeReducer);
-  const movieIsLoaded = useSelector(state => state.homeReducer.movieIsLoaded);
+  const { movies, page, totalPages, isLoading, movieIds, scrollPosition } = useSelector(state => state.homeReducer);
   const movieError = useSelector(state => state.homeReducer.movieError);
+  // const hasMounted = useRef(false);
+  const scrollContainerRef = useRef(null);
   // const [isInfiniteLoading, setIsInfiniteLoading] = useState(false);
-  let url = '';
-  if (searchKey === '') {
-    url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}`;
-  } else {
-      url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&query=${searchKey.toLowerCase()}&page=${page}&include_adult=false`;
-  }
-
+  
   const handleScroll = () => {
-    const rootElement = document.documentElement;
-    const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
-    if (rootElement.scrollTop / scrollTotal > 0.99) {
+    const scrollContainer = scrollContainerRef.current;
+    const scrollTotal = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+    dispatch(setScrollPosition(scrollContainer.scrollTop));
+    if (scrollContainer.scrollTop / scrollTotal > 0.99) {
       dispatch(setPage(page + 1));
-      // setIsInfiniteLoading(true);
-      document.removeEventListener('scroll', handleScroll);
+      scrollContainer.removeEventListener('scroll', handleScroll);
     }
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    const scrollContainer = scrollContainerRef.current;
+    scrollContainerRef.current.scrollTop = scrollPosition;
+    if (!isLoading && scrollContainer) {
       if (page < totalPages) {
-        document.addEventListener('scroll', handleScroll);
+        scrollContainer.addEventListener('scroll', handleScroll);
       } else {
-        document.removeEventListener('scroll', handleScroll);
+        scrollContainer.removeEventListener('scroll', handleScroll);
       }
-      // setIsInfiniteLoading(false);
     }
   // eslint-disable-next-line
   }, [isLoading]);
 
   useEffect(() => {
-    dispatch(fetchMovies(url));
-  },[dispatch, url, searchKey])
-
-  useEffect(() => {
-    dispatch(fetchMovies(url));
-    dispatch(setPage(1))
-    dispatch(resetMovies([]));
+    dispatch(fetchMovies(getURL(page, searchKey), movieIds));
     // eslint-disable-next-line
-  },[dispatch, searchKey])
+  },[dispatch, page])
+
+  // useEffect(() => {
+  //   if (hasMounted.current) {
+  //     dispatch(resetMovies([]));
+  //     dispatch(setPage(1))
+  //     dispatch(fetchMovies(getURL(page, searchKey), movieIds));
+  //   } else {
+  //     hasMounted.current = true;
+  //   }
+  //   // eslint-disable-next-line
+  // },[dispatch, searchKey])
 
   useEffect(() => {
     dispatch(setPath(path));
   },[dispatch, path])
 
-  if (!movieIsLoaded) {
-    return <Spinner />
-  }
+  // if (!movieIsLoaded) {
+  //   return <Spinner />
+  // }
+
+  useEffect(() => {
+    // Step 1: Disable scrolling on the root (body or html) element
+    document.body.style.overflow = 'hidden';
+    // Step 2: Enable scrolling for the ref component
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.style.overflowY = 'auto';  // Enable vertical scrolling
+      container.style.height = '90vh';     // Set a height for the scrollable container
+    }
+    // Clean up the overflow style when the component is unmounted
+    return () => {
+      document.body.style.overflow = '';   // Restore body overflow
+    };
+  }, []);
   
   return (
     <>
+      <div ref={scrollContainerRef} className='home-scroll-container'>
+      {(isLoading) && (<Spinner />)}
       {(movieError) && (<Error error={movieError} />)}
       {
         (!movies?.length && !movieError && !isLoading) ? (
@@ -85,6 +104,7 @@ function Home() {
            </>
         )
       }
+      </div>
     </>
   );
 

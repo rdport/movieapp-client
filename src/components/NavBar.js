@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchKey, setIsShowInfo } from '../store/actions/navbarAction';
+import { fetchMovies } from '../store/actions/homeAction';
 import { NavLink } from 'react-router-dom';
 import useDebounce from '../hooks/useDebounce';
 import Info from '../components/Info';
 import $ from 'jquery';
+import getURL from '../helpers/getUrl';
 
 function NavBar() {
   const [searchKeyNavBar, setSearchKeyNavBar] = useState('');
@@ -12,6 +14,8 @@ function NavBar() {
   const path = useSelector(state => state.pathReducer.path);
   const dispatch = useDispatch();
   const debouncedValue = useDebounce(searchKeyNavBar, 500);
+  const hasMounted = useRef(false);
+
 
   function handleInputChange(event) {
     setSearchKeyNavBar(event.target.value);
@@ -20,7 +24,6 @@ function NavBar() {
   function handleSubmit(event) {
     event.preventDefault();
   }
-
 
   function showInfo() {
     dispatch(setIsShowInfo(true));
@@ -31,7 +34,13 @@ function NavBar() {
   }, []);
 
   useEffect(() => {
-    dispatch(setSearchKey(debouncedValue));
+    if (hasMounted.current) {
+      dispatch(setSearchKey(debouncedValue));
+      dispatch(fetchMovies(getURL(1, debouncedValue), [], "searchMovies"));
+    } else {
+      hasMounted.current = true;
+    }
+   
   }, [dispatch, debouncedValue]);
 
   useEffect(() => {

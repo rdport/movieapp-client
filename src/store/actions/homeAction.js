@@ -1,4 +1,4 @@
-export const fetchMovies = (url) => {
+export const fetchMovies = (url, prevMovieIds, type) => {
   return (dispatch, getState) => {
     dispatch({
       type: "home/setIsLoading",
@@ -7,13 +7,29 @@ export const fetchMovies = (url) => {
     fetch(url)
     .then(handleResponse)
     .then((data) => {
+      if (type === "searchMovies") {
+        dispatch(resetMovies([]));
+        dispatch(setPage(1));
+      }
+      const filteredNewMovieIds = [];
+      const filtertedData = data.results.filter(movie => {
+        if (!prevMovieIds.includes(movie.id)) {
+          filteredNewMovieIds.push(movie.id);
+          return movie;
+        }
+        return false;
+      })
       dispatch({
         type: "home/setMovies",
-        movies: data.results
+        movies: filtertedData
       })
       dispatch({
         type: "home/setTotalPages",
         totalPages: data.total_pages
+      })
+      dispatch({
+        type: "home/setMovieIds",
+        movieIds: filteredNewMovieIds
       })
     })
     .catch((error) => {
@@ -21,6 +37,7 @@ export const fetchMovies = (url) => {
         type: "home/setMovieError",
         movieError: error
       })
+      console.log(error)
     })
     .finally(_ => {
       dispatch({
@@ -49,6 +66,24 @@ export const resetMovies = (movies) => {
     dispatch({
       type: "home/resetMovies",
       movies
+    })
+  }
+}
+
+export const resetMovieIds = (movieIds) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: "home/resetMovieIds",
+      movieIds
+    })
+  }
+}
+
+export const setScrollPosition = (scrollPosition) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: "home/setScrollPosition",
+      scrollPosition
     })
   }
 }
