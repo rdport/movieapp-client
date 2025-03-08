@@ -94,7 +94,7 @@ function Info() {
                     </ul>
                     <h2>P.S.</h2>
                     <ul>
-                      <li>For the purpose of prototyping, authentication and database are not used so all movies in favorites will not persist when the website reloads.</li>
+                      <li>For the purpose of prototyping, authentication and database are not used. Instead, Redux Persist is used to save all favorite movies in the local storage.</li>
                       <li>Please check out the "Fancytodo" project which has implemented more advanced authentication with secure access token, csrf token and refresh token.</li>
                       <li><a href="https://github.com/rdport/fancytodo-client">fancytodo-client on github</a>, <a href="https://github.com/rdport/fancytodo-server">fancytodo-server on github</a>, <a href="https://fancytodo-client.onrender.com">Fancytodo website</a></li>
                       <li>This project uses free-tier hosting so this website might not always be accessible and a significant initial loading time is expected.</li>
