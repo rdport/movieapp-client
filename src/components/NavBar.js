@@ -30,6 +30,7 @@ function NavBar() {
   function goHome() {
     setSearchKeyNavBar('');
     dispatch(setFavSearchKey(''));
+    dispatch(setSearchKey(''));
   }
 
   function showInfo() {
