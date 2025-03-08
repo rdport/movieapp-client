@@ -9,7 +9,7 @@ import $ from 'jquery';
 import getURL from '../helpers/getUrl';
 
 function NavBar() {
-  const [searchKeyNavBar, setSearchKeyNavBar] = useState('');
+  const [searchKeyNavBar, setSearchKeyNavBar] = useState(useSelector(state=> state.navbarReducer.searchKey));
   const isShowInfo = useSelector(state=> state.navbarReducer.isShowInfo);
   const path = useSelector(state => state.pathReducer.path);
   const dispatch = useDispatch();
@@ -23,6 +23,10 @@ function NavBar() {
 
   function handleSubmit(event) {
     event.preventDefault();
+  }
+
+  function goHome() {
+    setSearchKeyNavBar('');
   }
 
   function showInfo() {
@@ -56,7 +60,7 @@ function NavBar() {
   return(
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <NavLink className="nav-link d-flex align-items-center" exact to="/">
+        <NavLink className="nav-link d-flex align-items-center" exact to="/" onClick={goHome}>
           <img src="/images/logo.svg" width="30" height="30" className="d-inline-block align-top" alt="movie-app logo" loading="lazy" />
           <div className="brand-name">MOVIE APP</div>
         </NavLink>
@@ -65,7 +69,7 @@ function NavBar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li className="nav-item">
+            <li className="nav-item" onClick={goHome}>
               <NavLink className="nav-link d-flex align-items-center" activeClassName="active" exact to="/">
                 <img src="/images/home.svg" width="30" height="30" className="d-inline-block align-top" alt="home logo" loading="lazy" />
                 Home

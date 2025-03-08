@@ -12,13 +12,13 @@ import getURL from '../helpers/getUrl';
 function Home() {
   const { path } = useRouteMatch();
   const dispatch = useDispatch();
-  const searchKey = useSelector(state => state.navbarReducer.searchKey);
+  const { searchKey } = useSelector(state => state.navbarReducer);
   const { movies, page, totalPages, isLoading, movieIds, scrollPosition } = useSelector(state => state.homeReducer);
   const movieError = useSelector(state => state.homeReducer.movieError);
   // const hasMounted = useRef(false);
   const scrollContainerRef = useRef(null);
   // const [isInfiniteLoading, setIsInfiniteLoading] = useState(false);
-  
+
   const handleScroll = () => {
     const scrollContainer = scrollContainerRef.current;
     const scrollTotal = scrollContainer.scrollHeight - scrollContainer.clientHeight;
@@ -49,14 +49,13 @@ function Home() {
 
   // useEffect(() => {
   //   if (hasMounted.current) {
-  //     dispatch(resetMovies([]));
-  //     dispatch(setPage(1))
-  //     dispatch(fetchMovies(getURL(page, searchKey), movieIds));
+  //     dispatch(fetchMovies(getURL(1, ""), [], "searchMovies"));
+  //     dispatch(setIsHome(false));
   //   } else {
   //     hasMounted.current = true;
   //   }
   //   // eslint-disable-next-line
-  // },[dispatch, searchKey])
+  // },[dispatch, isHome])
 
   useEffect(() => {
     dispatch(setPath(path));

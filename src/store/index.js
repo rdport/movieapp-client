@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { homeReducer, favoriteReducer, pathReducer, navbarReducer, movieDetailReducer } from './reducers';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
   homeReducer,
@@ -10,6 +12,15 @@ const rootReducer = combineReducers({
   movieDetailReducer
 })
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+// Persist config
+const persistConfig = {
+  key: 'root',          // Key used for localStorage
+  storage,              // Default: uses localStorage
+  whitelist: ['homeReducer', 'favoriteReducer', 'pathReducer', 'navbarReducer', 'movieDetailReducer'], // Only persist these reducers
+  blacklist: [],        // Or exclude reducers you don't want persisted
+};
 
-export default store;
+// Create a persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const store = createStore(persistedReducer, applyMiddleware(thunk));
+export const persistor = persistStore(store);

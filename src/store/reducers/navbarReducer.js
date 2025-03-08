@@ -1,6 +1,6 @@
 const initialState = {
   searchKey: '',
-  isShowInfo: true,
+  isShowInfo: true
 }
 
 function navbarReducer( state = initialState, action ) {
