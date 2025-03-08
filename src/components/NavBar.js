@@ -12,13 +12,7 @@ function NavBar() {
   const path = useSelector(state => state.pathReducer.path);
   const { searchKey } = useSelector(state => state.navbarReducer);
   const { favSearchKey } = useSelector(state => state.navbarReducer);
-  const [searchKeyNavBar, setSearchKeyNavBar] = useState(
-    (path === "/") ?
-      searchKey :
-        (path === "/details/:MovieId") ?
-        favSearchKey :
-        ""
-  );
+  const [searchKeyNavBar, setSearchKeyNavBar] = useState('');
   const isShowInfo = useSelector(state=> state.navbarReducer.isShowInfo);
   const dispatch = useDispatch();
   const debouncedValue = useDebounce(searchKeyNavBar, 500);
@@ -47,11 +41,19 @@ function NavBar() {
   }, []);
 
   useEffect(() => {
+    if (path === '/') {
+      setSearchKeyNavBar(searchKey);
+    } else if (path === '/favorites') {
+        setSearchKeyNavBar(favSearchKey);
+    }
+  }, [path]);
+
+  useEffect(() => {
     if (hasMounted.current) {
       if (path === '/') {
         dispatch(setSearchKey(debouncedValue));
         dispatch(fetchMovies(getURL(1, debouncedValue), [], "searchMovies"));
-      } else if (path === '/details/:MovieId') {
+      } else if (path === '/favorites') {
         dispatch(setFavSearchKey(debouncedValue));
       }
     } else {
