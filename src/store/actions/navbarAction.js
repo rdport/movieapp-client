@@ -7,6 +7,15 @@ export const setSearchKey = (searchKey) => {
   }
 }  
 
+export const setFavSearchKey = (favSearchKey) => {
+  return (dispatch) => {
+   dispatch({
+    type: "navbar/setFavSearchKey",
+    favSearchKey
+   })
+  }
+}  
+
 export const setIsShowInfo = (isShowInfo) => {
   return (dispatch) => {
     dispatch({

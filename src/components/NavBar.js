@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearchKey, setIsShowInfo } from '../store/actions/navbarAction';
+import { setSearchKey, setIsShowInfo, setFavSearchKey } from '../store/actions/navbarAction';
 import { fetchMovies } from '../store/actions/homeAction';
 import { NavLink } from 'react-router-dom';
 import useDebounce from '../hooks/useDebounce';
@@ -9,9 +9,17 @@ import $ from 'jquery';
 import getURL from '../helpers/getUrl';
 
 function NavBar() {
-  const [searchKeyNavBar, setSearchKeyNavBar] = useState(useSelector(state=> state.navbarReducer.searchKey));
-  const isShowInfo = useSelector(state=> state.navbarReducer.isShowInfo);
   const path = useSelector(state => state.pathReducer.path);
+  const { searchKey } = useSelector(state => state.navbarReducer);
+  const { favSearchKey } = useSelector(state => state.navbarReducer);
+  const [searchKeyNavBar, setSearchKeyNavBar] = useState(
+    (path === "/") ?
+      searchKey :
+        (path === "/details/:MovieId") ?
+        favSearchKey :
+        ""
+  );
+  const isShowInfo = useSelector(state=> state.navbarReducer.isShowInfo);
   const dispatch = useDispatch();
   const debouncedValue = useDebounce(searchKeyNavBar, 500);
   const hasMounted = useRef(false);
@@ -27,6 +35,7 @@ function NavBar() {
 
   function goHome() {
     setSearchKeyNavBar('');
+    dispatch(setFavSearchKey(''));
   }
 
   function showInfo() {
@@ -39,12 +48,16 @@ function NavBar() {
 
   useEffect(() => {
     if (hasMounted.current) {
-      dispatch(setSearchKey(debouncedValue));
-      dispatch(fetchMovies(getURL(1, debouncedValue), [], "searchMovies"));
+      if (path === '/') {
+        dispatch(setSearchKey(debouncedValue));
+        dispatch(fetchMovies(getURL(1, debouncedValue), [], "searchMovies"));
+      } else if (path === '/details/:MovieId') {
+        dispatch(setFavSearchKey(debouncedValue));
+      }
     } else {
       hasMounted.current = true;
     }
-   
+  // eslint-disable-next-line
   }, [dispatch, debouncedValue]);
 
   useEffect(() => {
