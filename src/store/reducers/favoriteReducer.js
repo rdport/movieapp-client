@@ -1,5 +1,6 @@
 const initialState = {
-  favoriteMovies: []
+  favoriteMovies: [],
+  favScrollPosition: null
 }
 
 function favoriteReducer( state = initialState, action ) {
@@ -17,6 +18,8 @@ function favoriteReducer( state = initialState, action ) {
         ...state,
         favoriteMovies: state.favoriteMovies.filter(movie => movie.id !== action.favoriteMovieId)
       }
+    case 'home/setFavScrollPosition':
+      return { ...state, favScrollPosition: action.favScrollPosition }
     default:
       return state
   }

@@ -39,6 +39,10 @@ function Home() {
         scrollContainer.removeEventListener('scroll', handleScroll);
       }
     }
+
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+    }
   // eslint-disable-next-line
   }, [isLoading]);
 

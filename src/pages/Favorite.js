@@ -4,14 +4,33 @@ import { useRouteMatch } from 'react-router-dom';
 import { setPath } from '../store/actions/pathAction';
 import MovieCard from '../components/MovieCard';
 import NoItem from '../components/NoItem';
+import { setFavScrollPosition } from '../store/actions/favoriteAction';
 
 function Favorite() {
   const { path } = useRouteMatch();
-  const { favoriteMovies } = useSelector(state => state.favoriteReducer);
+  const { favoriteMovies, favScrollPosition } = useSelector(state => state.favoriteReducer);
   const { favSearchKey } = useSelector(state => state.navbarReducer);
   const [filteredFavoriteMovies, setFilteredFavoriteMovies] = useState(favoriteMovies);
   const scrollContainerRef = useRef(null);
   const dispatch = useDispatch();
+
+  const handleScroll = () => {
+    const scrollContainer = scrollContainerRef.current;
+    dispatch(setFavScrollPosition(scrollContainer.scrollTop));
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    scrollContainerRef.current.scrollTop = favScrollPosition;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  // eslint-disable-next-line
+  }, [filteredFavoriteMovies]);
 
   useEffect(() => {
     dispatch(setPath(path));
