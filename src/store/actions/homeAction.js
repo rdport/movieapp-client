@@ -4,54 +4,51 @@ export const fetchMovies = (url, prevMovieIds, type) => {
       type: "home/setIsLoading",
       isLoading: true
     })
-    setTimeout(() => {
-      fetch(url)
-      .then(handleResponse)
-      .then((data) => {
-        if (type === "searchMovies") {
-          dispatch(resetMovies([]));
-          dispatch(setPage(1));
+    fetch(url)
+    .then(handleResponse)
+    .then((data) => {
+      if (type === "searchMovies") {
+        dispatch(resetMovies([]));
+        dispatch(setPage(1));
+      }
+      const filteredNewMovieIds = [];
+      const filtertedData = data.results.filter(movie => {
+        if (!prevMovieIds.includes(movie.id)) {
+          filteredNewMovieIds.push(movie.id);
+          return movie;
         }
-        const filteredNewMovieIds = [];
-        const filtertedData = data.results.filter(movie => {
-          if (!prevMovieIds.includes(movie.id)) {
-            filteredNewMovieIds.push(movie.id);
-            return movie;
-          }
-          return false;
-        })
-        dispatch({
-          type: "home/setMovies",
-          movies: filtertedData
-        })
-        dispatch({
-          type: "home/setTotalPages",
-          totalPages: data.total_pages
-        })
-        dispatch({
-          type: "home/setMovieIds",
-          movieIds: filteredNewMovieIds
-        })
+        return false;
       })
-      .catch((error) => {
-        dispatch({
-          type: "home/setMovieError",
-          movieError: error
-        })
-        console.log(error)
+      dispatch({
+        type: "home/setMovies",
+        movies: filtertedData
       })
-      .finally(_ => {
-        dispatch({
-          type: "home/setMovieIsLoaded",
-          movieIsLoaded: true
-        })
-        dispatch({
-          type: "home/setIsLoading",
-          isLoading: false
-        })
+      dispatch({
+        type: "home/setTotalPages",
+        totalPages: data.total_pages
       })
-    }, 5000)
-   
+      dispatch({
+        type: "home/setMovieIds",
+        movieIds: filteredNewMovieIds
+      })
+    })
+    .catch((error) => {
+      dispatch({
+        type: "home/setMovieError",
+        movieError: error
+      })
+      console.log(error)
+    })
+    .finally(_ => {
+      dispatch({
+        type: "home/setMovieIsLoaded",
+        movieIsLoaded: true
+      })
+      dispatch({
+        type: "home/setIsLoading",
+        isLoading: false
+      })
+    })
   }
 }
 
