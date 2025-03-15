@@ -87,7 +87,7 @@ function Home() {
   return (
     <>
       <div ref={scrollContainerRef} className='home-scroll-container'>
-      {(isLoading) && (<Spinner />)}
+      {/* {(isLoading) && (<Spinner />)} */}
       {(movieError) && (<Error error={movieError} />)}
       {
         (!movies?.length && !movieError && !isLoading) ? (
@@ -101,8 +101,8 @@ function Home() {
                 })
               }
             </div>
-            {(isLoading && page !== 1) && (
-              <Spinner className="spinner-container-infinite-loading" />
+            {(isLoading) && (
+              <Spinner className="spinner-container-infinite-loading mt-3" />
             )}
            </>
         )

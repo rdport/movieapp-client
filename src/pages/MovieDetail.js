@@ -31,7 +31,7 @@ function MovieDetail() {
     const container = scrollContainerRef.current;
     if (container) {
       container.style.overflowY = 'auto';  // Enable vertical scrolling
-      container.style.height = '90vh';     // Set a height for the scrollable container
+      container.style.height = '93.5vh';     // Set a height for the scrollable container
     }
     // Clean up the overflow style when the component is unmounted
     return () => {
@@ -41,7 +41,7 @@ function MovieDetail() {
 
   return (
     <>
-      <div ref={scrollContainerRef} className="row justify-center d-flex align-items-center">
+      <div ref={scrollContainerRef} className="row justify-center d-flex align-items-center scrollable-container-moviedetails">
         <div className="col-sm col-md col-lg-4">
           <MovieImage movie={movieDetail} />
         </div>

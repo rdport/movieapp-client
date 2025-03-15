@@ -69,7 +69,7 @@ function Favorite() {
         {(!favoriteMovies.length) && (<NoItem text={"No favorites"} />)}
         {(favoriteMovies.length !== 0 && !filteredFavoriteMovies.length) && <NoItem text={"No results"} />}
         {filteredFavoriteMovies && (
-            <div className="layout-center row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4  g-4 ml-2 mr-2">
+            <div className="scrollable-container-favorites layout-center row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 ml-2 mr-2">
               {
                 filteredFavoriteMovies.map((movie) => {
                   return <MovieCard movie={movie} key={movie.id} />

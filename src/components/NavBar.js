@@ -47,6 +47,7 @@ function NavBar() {
     } else if (path === '/favorites') {
         setSearchKeyNavBar(favSearchKey);
     }
+    // eslint-disable-next-line
   }, [path]);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ function NavBar() {
   return(
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <NavLink className="nav-link d-flex align-items-center" exact to="/" onClick={goHome}>
+        <NavLink className="pl-0 nav-link d-flex align-items-center" exact to="/" onClick={goHome}>
           <img src="/images/logo.svg" width="30" height="30" className="d-inline-block align-top" alt="movie-app logo" loading="lazy" />
           <div className="brand-name">MOVIE APP</div>
         </NavLink>

@@ -7,7 +7,7 @@ function MovieImage(props) {
   if(Object.keys(props.movie).length && props.movie.constructor === Object) {
     return (
       <>
-        <div className="card mt-4 border-dark">
+        <div className="card mt-0 border-dark">
           <div className="card-body">
           {
             (props.movie.poster_path) ? (
